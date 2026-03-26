@@ -1,18 +1,14 @@
-const SUPABASE_URL = "https://ypfxbsnqfpdkwzrhmkoa.supabase.co";
-const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwZnhic25xZnBka3d6cmhta29hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1MTc0MTgsImV4cCI6MjA3NjA5MzQxOH0.ZhyDd2DzaJTR_2lE7T361rwiubFLG7dV0QiJzu6Ie8w";
+const SUPABASE_URL = import.meta.env.SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.SUPABASE_ANON_KEY;
 
 export async function fetchUser(email, token) {
   try {
-    const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/users?email=eq.${email}`,
-      {
-        headers: {
-          apikey: SUPABASE_ANON_KEY,
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/users?email=eq.${email}`, {
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (!response.ok) {
       let errorMsg = "Error desconocido con Supabase";
@@ -44,18 +40,15 @@ export async function fetchUser(email, token) {
 
 export async function updateNickname(email, token, newNickname) {
   try {
-    const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/users?email=eq.${email}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: SUPABASE_ANON_KEY,
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ nickname: newNickname }),
-      }
-    );
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/users?email=eq.${email}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ nickname: newNickname }),
+    });
 
     if (!response.ok) {
       let errorMsg = "Error desconocido con Supabase";
@@ -87,19 +80,16 @@ export async function uploadAvatar(formData, email, token) {
     const encodedEmail = email.replace(/@/g, "").replace(/\./g, "");
     const filePath = `avatars/${encodedEmail}/profile.png`;
 
-    const response = await fetch(
-      `${SUPABASE_URL}/storage/v1/object/${filePath}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          apikey: SUPABASE_ANON_KEY,
-          "Content-Type": file.type,
-          "x-upsert": "true",
-        },
-        body: file,
-      }
-    );
+    const response = await fetch(`${SUPABASE_URL}/storage/v1/object/${filePath}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        apikey: SUPABASE_ANON_KEY,
+        "Content-Type": file.type,
+        "x-upsert": "true",
+      },
+      body: file,
+    });
 
     if (!response.ok) {
       let errorMsg = "Error desconocido con Supabase";
@@ -125,18 +115,15 @@ export async function getAvatar(email, token, expiresIn = 3000) {
   const encodedEmail = email.replace(/@/g, "").replace(/\./g, "");
   const filePath = `avatars/${encodedEmail}/profile.png`;
 
-  const response = await fetch(
-    `${SUPABASE_URL}/storage/v1/object/sign/${filePath}`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        apikey: SUPABASE_ANON_KEY,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ expiresIn }),
-    }
-  );
+  const response = await fetch(`${SUPABASE_URL}/storage/v1/object/sign/${filePath}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      apikey: SUPABASE_ANON_KEY,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ expiresIn }),
+  });
 
   if (!response.ok) {
     return null;

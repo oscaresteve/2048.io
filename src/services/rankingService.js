@@ -1,6 +1,5 @@
-const SUPABASE_URL = "https://ypfxbsnqfpdkwzrhmkoa.supabase.co";
-const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwZnhic25xZnBka3d6cmhta29hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1MTc0MTgsImV4cCI6MjA3NjA5MzQxOH0.ZhyDd2DzaJTR_2lE7T361rwiubFLG7dV0QiJzu6Ie8w";
+const SUPABASE_URL = import.meta.env.SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.SUPABASE_ANON_KEY;
 
 export async function fetchGlobalRanking(limit = 100) {
   try {
@@ -11,7 +10,7 @@ export async function fetchGlobalRanking(limit = 100) {
           apikey: SUPABASE_ANON_KEY,
           Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
         },
-      }
+      },
     );
 
     if (!response.ok) {
@@ -25,9 +24,9 @@ export async function fetchGlobalRanking(limit = 100) {
     }
 
     const data = await response.json();
-    return {success: true, data, error: null};
+    return { success: true, data, error: null };
   } catch (err) {
     console.error("Supabase fetch error:", err);
-    return { success: false, data: [], error: new Error("Error de conexión con Supabase")};
+    return { success: false, data: [], error: new Error("Error de conexión con Supabase") };
   }
 }
