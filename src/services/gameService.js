@@ -1,8 +1,7 @@
 import { state$ } from "./stateService.js";
 
-const SUPABASE_URL = "https://ypfxbsnqfpdkwzrhmkoa.supabase.co";
-const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwZnhic25xZnBka3d6cmhta29hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1MTc0MTgsImV4cCI6MjA3NjA5MzQxOH0.ZhyDd2DzaJTR_2lE7T361rwiubFLG7dV0QiJzu6Ie8w";
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export async function saveGame() {
   const user = state$.value.user;
@@ -11,21 +10,18 @@ export async function saveGame() {
   }
 
   try {
-    const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/users?email=eq.${user.email}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: SUPABASE_ANON_KEY,
-          Authorization: `Bearer ${user.token}`,
-        },
-        body: JSON.stringify({
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/users?email=eq.${user.email}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${user.token}`,
+      },
+      body: JSON.stringify({
         max_score: user.max_score,
         game: user.game,
       }),
-      }
-    );
+    });
 
     if (!response.ok) {
       let errorMsg = "Error desconocido con Supabase";

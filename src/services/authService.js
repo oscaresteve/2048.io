@@ -1,9 +1,8 @@
 import { setState } from "./stateService.js";
 import { fetchUser, getAvatar } from "./userService.js";
 
-const SUPABASE_URL = "https://ypfxbsnqfpdkwzrhmkoa.supabase.co";
-const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwZnhic25xZnBka3d6cmhta29hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1MTc0MTgsImV4cCI6MjA3NjA5MzQxOH0.ZhyDd2DzaJTR_2lE7T361rwiubFLG7dV0QiJzu6Ie8w";
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 async function fetchSupabase(endpoint, body) {
   try {
@@ -20,8 +19,7 @@ async function fetchSupabase(endpoint, body) {
     const data = await response.json();
 
     if (!response.ok) {
-      const message =
-        data.error_description || data.msg || "Error desconocido con Supabase";
+      const message = data.error_description || data.msg || "Error desconocido con Supabase";
 
       console.error("Supabase error:", message);
 
@@ -36,10 +34,7 @@ async function fetchSupabase(endpoint, body) {
 }
 
 export async function login(email, password) {
-  const { data, error } = await fetchSupabase(
-    "/auth/v1/token?grant_type=password",
-    { email, password }
-  );
+  const { data, error } = await fetchSupabase("/auth/v1/token?grant_type=password", { email, password });
 
   if (error) return { error: error.message };
 
@@ -48,7 +43,6 @@ export async function login(email, password) {
 
   await ensureUserExists(email, token);
   console.log(token);
-  
 
   const { success, data: user } = await fetchUser(email, token);
   if (!success) return { error: "No se pudo obtener información del usuario" };
@@ -70,7 +64,7 @@ export async function login(email, password) {
     JSON.stringify({
       email: user.email,
       token,
-    })
+    }),
   );
 
   return { success: true };
