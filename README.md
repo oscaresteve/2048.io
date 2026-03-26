@@ -1,5 +1,7 @@
 # 2048 Adventure
 
+![2048-adventure](https://github.com/user-attachments/assets/b4140ef2-5f16-4442-a5f3-cbdc9593698a)
+
 Proyecto del 1er trimestre de DWEC (Desarrollo Web en Entorno Cliente) de 2º de DAW.
 
 Aplicación web del juego 2048 con:
