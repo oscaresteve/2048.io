@@ -1,8 +1,8 @@
 import { setState } from "./stateService.js";
 import { fetchUser, getAvatar } from "./userService.js";
 
-const SUPABASE_URL = import.meta.env.SUPABASE_URL;
-const SUPABASE_ANON_KEY = import.meta.env.SUPABASE_ANON_KEY;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 async function fetchSupabase(endpoint, body) {
   try {
